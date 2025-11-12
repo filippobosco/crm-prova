@@ -48,7 +48,6 @@ Il form raccoglie i seguenti dati:
 - **Cognome** (last_name)
 - **Email**
 - **Telefono**
-- **Messaggio** (opzionale)
 
 I dati vengono inviati in modo sicuro all'endpoint `https://prova.relatiacrm.com/api/webhook/website/` attraverso l'API route, mantenendo il token nascosto dal frontend.
 
@@ -62,8 +61,7 @@ Request body:
   "first_name": "Mario",
   "last_name": "Rossi",
   "email": "mario.rossi@example.com",
-  "phone": "+39 333 1234567",
-  "message": "Vorrei maggiori informazioni"
+  "phone": "+39 333 1234567"
 }
 ```
 
@@ -75,7 +73,6 @@ Payload inviato al CRM:
   "name": "Mario Rossi",
   "email": "mario.rossi@example.com",
   "phone": "+39 333 1234567",
-  "message": "Vorrei maggiori informazioni",
   "deal_title": "Mario Rossi - CRM Demo",
   "title": "Mario Rossi - CRM Demo",
   "subject": "Mario Rossi - CRM Demo"

@@ -7,8 +7,7 @@ export default function Home() {
     nome: '',
     cognome: '',
     telefono: '',
-    email: '',
-    message: ''
+    email: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -31,8 +30,7 @@ export default function Home() {
         first_name: formData.nome,
         last_name: formData.cognome,
         email: formData.email,
-        phone: formData.telefono,
-        message: formData.message
+        phone: formData.telefono
       };
 
       const response = await fetch('/api/submit-form', {
@@ -52,8 +50,7 @@ export default function Home() {
           nome: '',
           cognome: '',
           telefono: '',
-          email: '',
-          message: ''
+          email: ''
         });
       } else {
         setSubmitStatus({ 
@@ -148,18 +145,6 @@ export default function Home() {
                   onChange={handleChange}
                   placeholder="La tua e-mail" 
                   required 
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="message">Messaggio (opzionale)</label>
-                <textarea 
-                  id="message" 
-                  name="message" 
-                  value={formData.message}
-                  onChange={handleChange}
-                  placeholder="Il tuo messaggio"
-                  rows="4"
                 />
               </div>
 
@@ -323,8 +308,7 @@ export default function Home() {
           color: rgba(255, 255, 255, 0.9);
         }
 
-        .form-group input,
-        .form-group textarea {
+        .form-group input {
           width: 100%;
           padding: 1rem;
           background: rgba(255, 255, 255, 0.1);
@@ -336,18 +320,11 @@ export default function Home() {
           transition: all 0.3s ease;
         }
 
-        .form-group textarea {
-          resize: vertical;
-          min-height: 100px;
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
+        .form-group input::placeholder {
           color: rgba(255, 255, 255, 0.5);
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group input:focus {
           outline: none;
           border-color: #E8336E;
           background: rgba(255, 255, 255, 0.15);

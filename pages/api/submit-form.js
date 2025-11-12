@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { first_name, last_name, email, phone, message } = req.body;
+    const { first_name, last_name, email, phone } = req.body;
 
     // Validazione base dei dati
     if (!first_name || !last_name || !email || !phone) {
@@ -39,7 +39,6 @@ export default async function handler(req, res) {
       name: fullName, // Manteniamo anche name per compatibilità
       email,
       phone,
-      message: message || '',
       deal_title: `${fullName} - CRM Demo`, // Titolo del deal
       title: `${fullName} - CRM Demo`, // Alternativa per titolo
       subject: `${fullName} - CRM Demo` // Alternativa per subject
