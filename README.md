@@ -10,21 +10,15 @@ Applicazione Next.js per la raccolta di contatti e invio automatico al CRM Relat
 npm install
 ```
 
-### 2. Configurazione variabili d'ambiente
+### 2. Configurazione Token API
 
 Crea un file `.env.local` nella root del progetto con il seguente contenuto:
 
 ```
-# Token per inviare dati al CRM
 CRM_API_TOKEN=IL_TUO_TOKEN_QUI
-
-# (Opzionale) URL webhook n8n per automazioni
-N8N_WEBHOOK_URL=https://tua-istanza-n8n.com/webhook/xxx
 ```
 
-**Importante:** 
-- Sostituisci `IL_TUO_TOKEN_QUI` con il token reale del CRM
-- `N8N_WEBHOOK_URL` è opzionale - configuralo solo se usi n8n per automazioni
+**Importante:** Sostituisci `IL_TUO_TOKEN_QUI` con il token reale del CRM
 
 ### 3. Esecuzione in locale
 
@@ -59,8 +53,7 @@ I dati vengono inviati in modo sicuro all'endpoint `https://prova.relatiacrm.com
 
 ## Endpoint API
 
-### 1. POST `/api/submit-form`
-**Uso:** Form del sito invia dati al CRM
+**POST** `/api/submit-form`
 
 Request body:
 ```json
@@ -81,18 +74,6 @@ Response:
 }
 ```
 
-### 2. POST/GET `/api/webhook-crm`
-**Uso:** CRM invia notifiche quando arriva un nuovo contatto → Automazioni n8n
-
-- Riceve notifiche dal CRM
-- Inoltra automaticamente a n8n (se configurato)
-- Permette di creare automazioni (email, WhatsApp, ecc.)
-
-**URL webhook da configurare nel CRM:**
-```
-https://crm-prova.vercel.app/api/webhook-crm
-```
-
 ## Deploy su Vercel
 
 ### Passo 1: Importa il repository
@@ -100,21 +81,14 @@ https://crm-prova.vercel.app/api/webhook-crm
 2. Clicca su "Add New Project"
 3. Importa il repository `filippobosco/crm-prova` da GitHub
 
-### Passo 2: Configura le variabili d'ambiente
-**IMPORTANTE:** Prima del deploy, aggiungi le variabili:
+### Passo 2: Configura la variabile d'ambiente
+**IMPORTANTE:** Prima del deploy, aggiungi la variabile d'ambiente:
 
 1. Nella pagina di configurazione del progetto su Vercel
 2. Vai alla sezione "Environment Variables"
 3. Aggiungi:
-
-   **Variabile obbligatoria:**
    - **Name:** `CRM_API_TOKEN`
    - **Value:** Il tuo token reale dell'API CRM
-   - **Environment:** Production, Preview, Development (seleziona tutti)
-
-   **Variabile opzionale (per automazioni n8n):**
-   - **Name:** `N8N_WEBHOOK_URL`
-   - **Value:** URL del webhook n8n (es: https://tua-istanza.n8n.cloud/webhook/xxx)
    - **Environment:** Production, Preview, Development (seleziona tutti)
 
 ### Passo 3: Deploy
@@ -131,35 +105,4 @@ Clicca su "Deploy" e attendi il completamento.
 1. Apri la Console del browser (F12)
 2. Controlla se ci sono errori nella tab Console
 3. Verifica che l'API route `/api/submit-form` sia accessibile visitando `tuosito.vercel.app/api/submit-form` (dovresti vedere un errore 405 "Method not allowed" - questo è normale, significa che l'endpoint esiste)
-
-## Automazioni con n8n
-
-### Setup
-
-1. **Crea un workflow in n8n** con un nodo "Webhook"
-2. **Copia l'URL del webhook** (es: `https://tua-istanza.n8n.cloud/webhook/nuovo-contatto`)
-3. **Aggiungi la variabile su Vercel:**
-   - Name: `N8N_WEBHOOK_URL`
-   - Value: L'URL copiato da n8n
-4. **Configura il webhook nel CRM:**
-   - URL: `https://crm-prova.vercel.app/api/webhook-crm`
-5. **Redeploy** su Vercel
-
-### Flusso completo
-
-```
-Form compilato → CRM → /api/webhook-crm → n8n → Automazioni
-                                                   ├─ Email benvenuto
-                                                   ├─ WhatsApp
-                                                   ├─ Slack notification
-                                                   └─ Altre azioni
-```
-
-### Esempio workflow n8n
-
-1. **Webhook Trigger** - Riceve i dati dal CRM
-2. **Email Node** - Invia email di benvenuto al contatto
-3. **HTTP Request** - Invia messaggio WhatsApp via API
-4. **Google Sheets** - Salva in un foglio Google
-5. **Slack** - Notifica il team
 
