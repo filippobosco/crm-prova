@@ -21,8 +21,11 @@ export default async function handler(req, res) {
 
     if (!token) {
       console.error('CRM_API_TOKEN non configurato');
+      console.error('Variabili d\'ambiente disponibili:', Object.keys(process.env).filter(k => k.includes('CRM')));
       return res.status(500).json({ 
-        error: 'Configurazione server non valida' 
+        error: 'Configurazione server non valida',
+        debug: 'CRM_API_TOKEN non trovato nelle variabili d\'ambiente. Verifica la configurazione su Vercel.',
+        hint: 'Hai fatto il redeploy dopo aver aggiunto la variabile?'
       });
     }
 
