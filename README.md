@@ -74,9 +74,35 @@ Response:
 }
 ```
 
-## Deploy
+## Deploy su Vercel
 
-Questa applicazione può essere facilmente deployata su Vercel, Netlify o qualsiasi altro servizio che supporti Next.js.
+### Passo 1: Importa il repository
+1. Vai su [vercel.com](https://vercel.com)
+2. Clicca su "Add New Project"
+3. Importa il repository `filippobosco/crm-prova` da GitHub
 
-Ricorda di configurare la variabile d'ambiente `RELATIA_API_TOKEN` nelle impostazioni del tuo servizio di hosting.
+### Passo 2: Configura la variabile d'ambiente
+**IMPORTANTE:** Prima del deploy, aggiungi la variabile d'ambiente:
+
+1. Nella pagina di configurazione del progetto su Vercel
+2. Vai alla sezione "Environment Variables"
+3. Aggiungi:
+   - **Name:** `RELATIA_API_TOKEN`
+   - **Value:** Il tuo token reale dell'API Relatia
+   - **Environment:** Production, Preview, Development (seleziona tutti)
+
+### Passo 3: Deploy
+Clicca su "Deploy" e attendi il completamento.
+
+### Troubleshooting
+
+**Se vedi "404: NOT_FOUND":**
+1. Verifica che la variabile `RELATIA_API_TOKEN` sia configurata
+2. Controlla i logs del build su Vercel
+3. Rieffettua il deploy manualmente da Vercel Dashboard
+
+**Se il form non funziona:**
+1. Apri la Console del browser (F12)
+2. Controlla se ci sono errori nella tab Console
+3. Verifica che l'API route `/api/submit-form` sia accessibile visitando `tuosito.vercel.app/api/submit-form` (dovresti vedere un errore 405 "Method not allowed" - questo è normale, significa che l'endpoint esiste)
 
