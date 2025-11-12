@@ -6,13 +6,13 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { name, email, phone, message } = req.body;
+    const { first_name, last_name, email, phone, message } = req.body;
 
     // Validazione base dei dati
-    if (!name || !email || !phone) {
+    if (!first_name || !last_name || !email || !phone) {
       return res.status(400).json({ 
         error: 'Campi obbligatori mancanti',
-        details: 'Nome, email e telefono sono obbligatori' 
+        details: 'Nome, cognome, email e telefono sono obbligatori' 
       });
     }
 
@@ -29,15 +29,20 @@ export default async function handler(req, res) {
       });
     }
 
-    // Payload secondo le specifiche originali
+    // Costruisci il nome completo per il titolo del deal
+    const fullName = `${first_name} ${last_name}`;
+
+    // Payload con first_name e last_name separati per il CRM
     const payload = {
-      name,
+      first_name,
+      last_name,
+      name: fullName, // Manteniamo anche name per compatibilità
       email,
       phone,
       message: message || '',
-      deal_title: `${name} - CRM Demo`, // Titolo del deal
-      title: `${name} - CRM Demo`, // Alternativa per titolo
-      subject: `${name} - CRM Demo` // Alternativa per subject
+      deal_title: `${fullName} - CRM Demo`, // Titolo del deal
+      title: `${fullName} - CRM Demo`, // Alternativa per titolo
+      subject: `${fullName} - CRM Demo` // Alternativa per subject
     };
 
     console.log('Invio dati al CRM:', { ...payload, email: '***' });

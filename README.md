@@ -44,7 +44,8 @@ npm start
 ## Funzionalità
 
 Il form raccoglie i seguenti dati:
-- **Nome e Cognome** (combinati in un unico campo "name")
+- **Nome** (first_name)
+- **Cognome** (last_name)
 - **Email**
 - **Telefono**
 - **Messaggio** (opzionale)
@@ -58,10 +59,26 @@ I dati vengono inviati in modo sicuro all'endpoint `https://prova.relatiacrm.com
 Request body:
 ```json
 {
-  "name": "Mario Rossi",
+  "first_name": "Mario",
+  "last_name": "Rossi",
   "email": "mario.rossi@example.com",
   "phone": "+39 333 1234567",
   "message": "Vorrei maggiori informazioni"
+}
+```
+
+Payload inviato al CRM:
+```json
+{
+  "first_name": "Mario",
+  "last_name": "Rossi",
+  "name": "Mario Rossi",
+  "email": "mario.rossi@example.com",
+  "phone": "+39 333 1234567",
+  "message": "Vorrei maggiori informazioni",
+  "deal_title": "Mario Rossi - CRM Demo",
+  "title": "Mario Rossi - CRM Demo",
+  "subject": "Mario Rossi - CRM Demo"
 }
 ```
 

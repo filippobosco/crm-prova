@@ -26,9 +26,10 @@ export default function Home() {
     setSubmitStatus(null);
 
     try {
-      // Combina nome e cognome per il campo "name" richiesto dall'API
+      // Invia nome e cognome separati per il CRM
       const dataToSend = {
-        name: `${formData.nome} ${formData.cognome}`.trim(),
+        first_name: formData.nome,
+        last_name: formData.cognome,
         email: formData.email,
         phone: formData.telefono,
         message: formData.message
