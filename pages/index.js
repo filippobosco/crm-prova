@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Image from 'next/image';
 import { useState } from 'react';
 
 export default function Home() {
@@ -76,14 +77,17 @@ export default function Home() {
         <title>CRM Automation - Relatia</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta charSet="UTF-8" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
       </Head>
 
       <div className="container">
         <div className="logo-container">
-          <img src="/logo-relatia.png" alt="Relatia Logo" />
+          <Image 
+            src="/logo-relatia.png" 
+            alt="Relatia Logo" 
+            width={200}
+            height={80}
+            priority
+          />
         </div>
 
         <div className="content">
@@ -253,9 +257,11 @@ export default function Home() {
           text-align: center;
           margin-bottom: 3rem;
           animation: fadeInDown 1s ease-out;
+          display: flex;
+          justify-content: center;
         }
 
-        .logo-container img {
+        .logo-container :global(img) {
           max-width: 200px;
           height: auto;
           filter: drop-shadow(0 4px 20px rgba(232, 51, 110, 0.3));
@@ -468,7 +474,7 @@ export default function Home() {
             padding: 1.5rem;
           }
 
-          .logo-container img {
+          .logo-container :global(img) {
             max-width: 150px;
           }
         }
