@@ -8,8 +8,7 @@ export default function Home() {
     cognome: '',
     telefono: '',
     email: '',
-    azienda: '',
-    occupazione: ''
+    message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -27,22 +26,12 @@ export default function Home() {
     setSubmitStatus(null);
 
     try {
-      // Ottieni l'URL della pagina corrente e parametri UTM
-      const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
-      const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
-      const utmSource = urlParams?.get('utm_source') || 'direct';
-
-      // Costruisci payload secondo la documentazione CRM Relatia
+      // Combina nome e cognome per il campo "name" richiesto dall'API
       const dataToSend = {
-        first_name: formData.nome,
-        last_name: formData.cognome,
+        name: `${formData.nome} ${formData.cognome}`.trim(),
         email: formData.email,
         phone: formData.telefono,
-        company: formData.azienda || undefined,
-        occupation: formData.occupazione || undefined,
-        page_url: currentUrl,
-        source: 'Website Form',
-        origin: utmSource
+        message: formData.message
       };
 
       const response = await fetch('/api/submit-form', {
@@ -56,15 +45,14 @@ export default function Home() {
       const result = await response.json();
 
       if (response.ok) {
-        setSubmitStatus({ type: 'success', message: 'Richiesta inviata con successo! Ti contatteremo presto.' });
+        setSubmitStatus({ type: 'success', message: 'Richiesta inviata con successo!' });
         // Reset form
         setFormData({
           nome: '',
           cognome: '',
           telefono: '',
           email: '',
-          azienda: '',
-          occupazione: ''
+          message: ''
         });
       } else {
         setSubmitStatus({ 
@@ -163,26 +151,14 @@ export default function Home() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="azienda">Nome azienda (opzionale)</label>
-                <input 
-                  type="text" 
-                  id="azienda" 
-                  name="azienda" 
-                  value={formData.azienda}
+                <label htmlFor="message">Messaggio (opzionale)</label>
+                <textarea 
+                  id="message" 
+                  name="message" 
+                  value={formData.message}
                   onChange={handleChange}
-                  placeholder="Il nome della tua azienda"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="occupazione">Di cosa ti occupi? (opzionale)</label>
-                <input 
-                  type="text" 
-                  id="occupazione" 
-                  name="occupazione" 
-                  value={formData.occupazione}
-                  onChange={handleChange}
-                  placeholder="Es: Imprenditore nel settore retail"
+                  placeholder="Il tuo messaggio"
+                  rows="4"
                 />
               </div>
 
@@ -346,7 +322,8 @@ export default function Home() {
           color: rgba(255, 255, 255, 0.9);
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group textarea {
           width: 100%;
           padding: 1rem;
           background: rgba(255, 255, 255, 0.1);
@@ -358,11 +335,18 @@ export default function Home() {
           transition: all 0.3s ease;
         }
 
-        .form-group input::placeholder {
+        .form-group textarea {
+          resize: vertical;
+          min-height: 100px;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
           color: rgba(255, 255, 255, 0.5);
         }
 
-        .form-group input:focus {
+        .form-group input:focus,
+        .form-group textarea:focus {
           outline: none;
           border-color: #E8336E;
           background: rgba(255, 255, 255, 0.15);

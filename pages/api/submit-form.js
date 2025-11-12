@@ -1,4 +1,4 @@
-// API Route per nascondere il token e inviare i dati al CRM Relatia
+// API Route per nascondere il token e inviare i dati all'endpoint CRM
 export default async function handler(req, res) {
   // Accetta solo richieste POST
   if (req.method !== 'POST') {
@@ -6,29 +6,18 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { 
-      first_name, 
-      last_name, 
-      email, 
-      phone, 
-      company,
-      occupation,
-      page_url,
-      source,
-      origin
-    } = req.body;
+    const { name, email, phone, message } = req.body;
 
-    // Validazione campi obbligatori secondo documentazione CRM
-    if (!first_name || !last_name || !email || !page_url || !source) {
+    // Validazione base dei dati
+    if (!name || !email || !phone) {
       return res.status(400).json({ 
         error: 'Campi obbligatori mancanti',
-        details: 'first_name, last_name, email, page_url e source sono obbligatori' 
+        details: 'Nome, email e telefono sono obbligatori' 
       });
     }
 
-    // Token e URL nascosti dal frontend (variabili d'ambiente)
+    // Token nascosto dal frontend (usa variabile d'ambiente)
     const token = process.env.CRM_API_TOKEN;
-    const crmUrl = process.env.CRM_API_URL || 'https://relatia.relatiacrm.com/crm/webhook/website/';
 
     if (!token) {
       console.error('CRM_API_TOKEN non configurato');
@@ -37,26 +26,18 @@ export default async function handler(req, res) {
       });
     }
 
-    // Costruisci payload secondo la documentazione CRM
+    // Payload secondo le specifiche originali
     const payload = {
-      // Campi obbligatori
-      first_name,
-      last_name,
+      name,
       email,
-      page_url,
-      source,
-      
-      // Campi opzionali
-      ...(phone && { phone }),
-      ...(company && { company }),
-      ...(occupation && { occupation }),
-      ...(origin && { origin }),
+      phone,
+      message: message || ''
     };
 
-    console.log('Invio dati al CRM Relatia:', { ...payload, email: '***' });
+    console.log('Invio dati al CRM:', { ...payload, email: '***' });
 
-    // Invio dati al CRM Relatia
-    const response = await fetch(crmUrl, {
+    // Invio dati all'endpoint esterno
+    const response = await fetch('https://prova.relatiacrm.com/api/webhook/website/', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -68,10 +49,10 @@ export default async function handler(req, res) {
     // Gestione risposta
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Errore API Relatia CRM:', response.status, errorText);
+      console.error('Errore API CRM:', response.status, errorText);
       
       return res.status(response.status).json({ 
-        error: 'Errore durante l\'invio dei dati al CRM',
+        error: 'Errore durante l\'invio dei dati',
         details: errorText
       });
     }
@@ -82,7 +63,7 @@ export default async function handler(req, res) {
     // Risposta di successo
     return res.status(200).json({ 
       success: true, 
-      message: 'Contatto aggiunto al CRM con successo',
+      message: 'Dati inviati con successo',
       data 
     });
 

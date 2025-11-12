@@ -15,11 +15,10 @@ npm install
 Crea un file `.env.local` nella root del progetto con il seguente contenuto:
 
 ```
-CRM_API_TOKEN=GpiGTpy1SV4s3trTXSa8MKiSew160KolV6A76akULw7YKVej9rfSKD9QFZMQpWWK
-CRM_API_URL=https://relatia.relatiacrm.com/crm/webhook/website/
+CRM_API_TOKEN=IL_TUO_TOKEN_QUI
 ```
 
-**Importante:** Questi sono i valori per l'integrazione con il CRM Relatia.
+**Importante:** Sostituisci `IL_TUO_TOKEN_QUI` con il token reale fornito dal tuo CRM.
 
 ### 3. Esecuzione in locale
 
@@ -44,41 +43,25 @@ npm start
 
 ## Funzionalità
 
-Il form raccoglie i seguenti dati e li invia al CRM Relatia:
+Il form raccoglie i seguenti dati:
+- **Nome e Cognome** (combinati in un unico campo "name")
+- **Email**
+- **Telefono**
+- **Messaggio** (opzionale)
 
-### Campi obbligatori:
-- **Nome** (first_name)
-- **Cognome** (last_name)
-- **Email** (email)
-- **Telefono** (phone)
-
-### Campi opzionali:
-- **Nome azienda** (company)
-- **Occupazione** (occupation)
-
-### Campi automatici:
-- **URL della pagina** (page_url) - rilevato automaticamente
-- **Sorgente** (source) - "Website Form"
-- **Origine** (origin) - UTM source o "direct"
-
-I dati vengono inviati in modo sicuro all'endpoint Relatia CRM attraverso l'API route, mantenendo il token nascosto dal frontend.
+I dati vengono inviati in modo sicuro all'endpoint `https://prova.relatiacrm.com/api/webhook/website/` attraverso l'API route, mantenendo il token nascosto dal frontend.
 
 ## Endpoint API
 
 **POST** `/api/submit-form`
 
-Request body (secondo documentazione CRM Relatia):
+Request body:
 ```json
 {
-  "first_name": "Mario",
-  "last_name": "Rossi",
+  "name": "Mario Rossi",
   "email": "mario.rossi@example.com",
   "phone": "+39 333 1234567",
-  "company": "Azienda SRL",
-  "occupation": "Imprenditore settore retail",
-  "page_url": "https://tuosito.com",
-  "source": "Website Form",
-  "origin": "direct"
+  "message": "Vorrei maggiori informazioni"
 }
 ```
 
@@ -86,7 +69,7 @@ Response:
 ```json
 {
   "success": true,
-  "message": "Contatto aggiunto al CRM con successo",
+  "message": "Dati inviati con successo",
   "data": {}
 }
 ```
@@ -98,21 +81,14 @@ Response:
 2. Clicca su "Add New Project"
 3. Importa il repository `filippobosco/crm-prova` da GitHub
 
-### Passo 2: Configura le variabili d'ambiente
-**IMPORTANTE:** Prima del deploy, aggiungi le variabili d'ambiente:
+### Passo 2: Configura la variabile d'ambiente
+**IMPORTANTE:** Prima del deploy, aggiungi la variabile d'ambiente:
 
 1. Nella pagina di configurazione del progetto su Vercel
 2. Vai alla sezione "Environment Variables"
-3. Aggiungi queste variabili:
-
-   **Prima variabile:**
+3. Aggiungi:
    - **Name:** `CRM_API_TOKEN`
-   - **Value:** `GpiGTpy1SV4s3trTXSa8MKiSew160KolV6A76akULw7YKVej9rfSKD9QFZMQpWWK`
-   - **Environment:** Production, Preview, Development (seleziona tutti)
-
-   **Seconda variabile:**
-   - **Name:** `CRM_API_URL`
-   - **Value:** `https://relatia.relatiacrm.com/crm/webhook/website/`
+   - **Value:** Il tuo token reale dell'API CRM
    - **Environment:** Production, Preview, Development (seleziona tutti)
 
 ### Passo 3: Deploy
@@ -121,7 +97,7 @@ Clicca su "Deploy" e attendi il completamento.
 ### Troubleshooting
 
 **Se vedi "404: NOT_FOUND":**
-1. Verifica che le variabili `CRM_API_TOKEN` e `CRM_API_URL` siano configurate
+1. Verifica che la variabile `CRM_API_TOKEN` sia configurata
 2. Controlla i logs del build su Vercel (tab "Building")
 3. Rieffettua il deploy manualmente da Vercel Dashboard
 
