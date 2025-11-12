@@ -34,7 +34,10 @@ export default async function handler(req, res) {
       name,
       email,
       phone,
-      message: message || ''
+      message: message || '',
+      deal_title: `${name} - CRM Demo`, // Titolo del deal
+      title: `${name} - CRM Demo`, // Alternativa per titolo
+      subject: `${name} - CRM Demo` // Alternativa per subject
     };
 
     console.log('Invio dati al CRM:', { ...payload, email: '***' });
