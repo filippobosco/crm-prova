@@ -7,7 +7,8 @@ export default function Home() {
     nome: '',
     cognome: '',
     telefono: '',
-    email: ''
+    email: '',
+    azienda: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -30,7 +31,8 @@ export default function Home() {
         first_name: formData.nome,
         last_name: formData.cognome,
         email: formData.email,
-        phone: formData.telefono
+        phone: formData.telefono,
+        company: formData.azienda || undefined // Opzionale
       };
 
       const response = await fetch('/api/submit-form', {
@@ -50,7 +52,8 @@ export default function Home() {
           nome: '',
           cognome: '',
           telefono: '',
-          email: ''
+          email: '',
+          azienda: ''
         });
       } else {
         setSubmitStatus({ 
@@ -145,6 +148,18 @@ export default function Home() {
                   onChange={handleChange}
                   placeholder="La tua e-mail" 
                   required 
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="azienda">Nome azienda (opzionale)</label>
+                <input 
+                  type="text" 
+                  id="azienda" 
+                  name="azienda" 
+                  value={formData.azienda}
+                  onChange={handleChange}
+                  placeholder="Il nome della tua azienda"
                 />
               </div>
 

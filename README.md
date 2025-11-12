@@ -44,10 +44,11 @@ npm start
 ## Funzionalità
 
 Il form raccoglie i seguenti dati:
-- **Nome** (first_name)
-- **Cognome** (last_name)
-- **Email**
-- **Telefono**
+- **Nome** (first_name) - obbligatorio
+- **Cognome** (last_name) - obbligatorio
+- **Email** - obbligatorio
+- **Telefono** - obbligatorio
+- **Nome azienda** (company) - opzionale
 
 I dati vengono inviati in modo sicuro all'endpoint `https://prova.relatiacrm.com/api/webhook/website/` attraverso l'API route, mantenendo il token nascosto dal frontend.
 
@@ -61,7 +62,8 @@ Request body:
   "first_name": "Mario",
   "last_name": "Rossi",
   "email": "mario.rossi@example.com",
-  "phone": "+39 333 1234567"
+  "phone": "+39 333 1234567",
+  "company": "Azienda SRL"
 }
 ```
 
@@ -73,6 +75,7 @@ Payload inviato al CRM:
   "name": "Mario Rossi",
   "email": "mario.rossi@example.com",
   "phone": "+39 333 1234567",
+  "company": "Azienda SRL",
   "deal_title": "Mario Rossi - CRM Demo",
   "title": "Mario Rossi - CRM Demo",
   "subject": "Mario Rossi - CRM Demo"
